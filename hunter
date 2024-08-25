@@ -1,0 +1,39 @@
+#! /bin/bash 
+
+base_folder=$(pwd)
+
+cmd=$1
+sub_cmd=$2
+
+if [ $cmd == 'create' ]; then
+	if [ $sub_cmd == 'header' ]; then
+		header_name=$3
+		header_file_name="${header_name,,}.h"
+		header_def_name="${header_name^^}_H"
+
+		if [ -d "$base_folder/headers" ]; then
+			dest_folder=$base_folder/headers
+		else
+			mkdir $base_folder/headers
+			dest_folder=$base_folder/headers
+		fi
+
+		if [ -f $dest_folder/$header_file_name ]; then
+			echo "Header file $header_file_name already exists in /headers"
+			exit 1
+		fi
+cat <<EOF >$dest_folder/$header_file_name
+#ifndef $header_def_name
+#define $header_def_name
+
+#endif
+EOF
+	echo "Header $header_file_name was successfully created!
+Run 'cat headers/$header_file_name' to inspect it." 
+	else 
+		echo "$sub_cmd is not a valid command. Hit hunter --help for more info" 
+	fi
+fi 
+
+
+
