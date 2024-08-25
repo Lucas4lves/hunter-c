@@ -6,6 +6,10 @@
 # Ignore /headers and /src folders 
 /headers
 /src
+
+#Ignore clear sh
+/clear.sh
+
 # User-specific files
 *.rsuser
 *.suo
