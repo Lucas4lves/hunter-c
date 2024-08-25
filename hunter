@@ -28,15 +28,18 @@ if [ $cmd == 'create' ]; then
 		fi
 
 		if [ -f $dest_folder/$header_file_name ]; then
-			echo "Header file $header_file_name already exists in /headers"
+			echo "-- Hunter C --"
+			echo "CALLED FROM: $0"
+			echo "ERROR: Header file $header_file_name already exists in /headers"
 			exit 1
 		fi
 	write_header
 	echo "Header $header_file_name was successfully created!
 Run 'cat headers/$header_file_name' to inspect it." 
 	else 
-		echo "$sub_cmd is not a valid command. Hit hunter help for more info" 
+		echo "hunter $cmd $sub_cmd is not a valid command. Hit hunter help for more info"
+		exit 1 
 	fi
 else
-	echo "$cmd is not a recognized command. Hit hunter help to more info"
+	echo "$0 -> ERROR: 'hunter $cmd' is not a recognized command. Hit hunter help to more info"
 fi 
