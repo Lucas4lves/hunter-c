@@ -81,6 +81,12 @@ fi
 if [[ $cmd == 'create' ]]; then
 	if [ $sub_cmd == 'header' ]; then
 		module_name=$3
+		if [[ $module_name == *"."* ]]; then
+			echo -e "${blue}>>--Hunter C-->${clear}"
+			echo -e "$0: ERROR: Header file names ${red}must not contain${clear} '.'"
+			echo -e "Try '${module_name%.*}' instead"
+			exit 1 
+		fi
 		module_file_name="${module_name,,}.h"
 		module_def_name="${module_name^^}_H"
 
@@ -92,6 +98,12 @@ if [[ $cmd == 'create' ]]; then
 Run 'cat headers/$module_file_name' to inspect it."
 	elif [[ $sub_cmd == 'impl' ]]; then 
 		module_name=$3
+		if [[ $module_name == *"."* ]]; then
+			echo -e "${blue}>>--Hunter C-->${clear}"
+			echo -e "ERROR: Implementation file names ${red}must not contain${clear} '.'"
+			echo -e "Try '${module_name%.*}' instead"
+			exit 1 
+		fi
 		module_file_name="${module_name,,}.c"
 
 		check_dest_folder $sub_cmd
