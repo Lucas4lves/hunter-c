@@ -5,41 +5,103 @@ base_folder=$(pwd)
 cmd=$1
 sub_cmd=$2
 
-write_header(){
-cat <<EOF >$dest_folder/$header_file_name
-#ifndef $header_def_name
-#define $header_def_name
+write_module(){
+
+if [[ -z ${1+x} ]]; then
+	echo "ERROR: write module parameter is missing"
+	exit 1
+fi 
+
+if [[ $1 == 'header' ]]; then
+cat <<EOF >$dest_folder/$module_file_name
+#ifndef $module_def_name
+#define $module_def_name
 
 #endif
 EOF
+else
+cat <<EOF >$dest_folder/$module_file_name
+#include "headers/$module_name.h"
+EOF
+fi
 }
 
-if [ $cmd == 'create' ]; then
+check_dest_folder(){
+if [[ -z ${1+x} ]]; then
+	echo "ERROR: check dest folder parameter is missing"
+	exit 1
+fi 
+
+if [[ $1 == 'header' ]]; then
+	if [[ -d "$base_folder/headers" ]]; then
+		dest_folder=$base_folder/headers
+	else
+		mkdir $base_folder/headers
+		dest_folder=$base_folder/headers
+	fi
+else
+	if [[ -d "$base_folder/src" ]]; then
+		dest_folder=$base_folder/src
+	else
+		mkdir $base_folder/src
+		dest_folder=$base_folder/src
+	fi
+fi
+}
+
+check_module_existence(){
+if [[ -z ${1+x} ]]; then
+	echo "ERROR: check module existence parameter is missing"
+	exit 1
+fi 
+
+if [[ $1 == 'header' ]]; then
+	if [[ -f $dest_folder/$module_file_name ]]; then
+	echo "-- Hunter C --"
+	echo "CALLED FROM: $0"
+	echo "ERROR: Header file $module_file_name already exists in /headers"
+	exit 1
+	fi
+else 
+	if [[ -f $dest_folder/$module_file_name ]]; then
+	echo "-- Hunter C --"
+	echo "CALLED FROM: $0"
+	echo "ERROR: Header file $module_file_name already exists in /src"
+	exit 1
+	fi
+fi
+}
+
+if [[ $cmd == 'create' ]]; then
 	if [ $sub_cmd == 'header' ]; then
-		header_name=$3
-		header_file_name="${header_name,,}.h"
-		header_def_name="${header_name^^}_H"
+		module_name=$3
+		module_file_name="${module_name,,}.h"
+		module_def_name="${module_name^^}_H"
 
-		if [ -d "$base_folder/headers" ]; then
-			dest_folder=$base_folder/headers
-		else
-			mkdir $base_folder/headers
-			dest_folder=$base_folder/headers
-		fi
+		check_dest_folder $sub_cmd
+		check_module_existence $sub_cmd
+		write_module $sub_cmd
 
-		if [ -f $dest_folder/$header_file_name ]; then
-			echo "-- Hunter C --"
-			echo "CALLED FROM: $0"
-			echo "ERROR: Header file $header_file_name already exists in /headers"
-			exit 1
-		fi
-	write_header
-	echo "Header $header_file_name was successfully created!
-Run 'cat headers/$header_file_name' to inspect it." 
-	else 
-		echo "hunter $cmd $sub_cmd is not a valid command. Hit hunter help for more info"
+	echo "Header $module_file_name was successfully created!
+Run 'cat headers/$module_file_name' to inspect it."
+	elif [[ $sub_cmd == 'impl' ]]; then 
+		module_name=$3
+		module_file_name="${module_name,,}.c"
+
+		check_dest_folder $sub_cmd
+		check_module_existence $sub_cmd
+		write_module $sub_cmd
+		
+	echo "Implementation file $module_file_name was successfully created!
+Run 'cat src/$module_file_name' to inspect it."
+	else
+		echo "-- Hunter C --"
+		echo "CALLED FROM: $0"
+		echo "ERROR: hunter $cmd $sub_cmd is not a valid command. Hit hunter help for more info"
 		exit 1 
 	fi
 else
-	echo "$0 -> ERROR: 'hunter $cmd' is not a recognized command. Hit hunter help to more info"
+	echo "-- Hunter C --"
+	echo "CALLED FROM: $0"
+	echo "ERROR: 'hunter $cmd' is not a recognized command. Hit hunter help to more info"
 fi 
