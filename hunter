@@ -17,15 +17,23 @@ if [ $cmd == 'create' ]; then
 			mkdir $base_folder/headers
 			dest_folder=$base_folder/headers
 		fi
-	else 
-		echo "$sub_cmd is not a valid command. Hit hunter --help for more info" 
-	fi
-fi 
 
+		if [ -f $dest_folder/$header_file_name ]; then
+			echo "Header file $header_file_name already exists in /headers"
+			exit 1
+		fi
 cat <<EOF >$dest_folder/$header_file_name
 #ifndef $header_def_name
 #define $header_def_name
 
 #endif
 EOF
+	echo "Header $header_file_name was successfully created!
+Run 'cat headers/$header_file_name' to inspect it." 
+	else 
+		echo "$sub_cmd is not a valid command. Hit hunter --help for more info" 
+	fi
+fi 
+
+
 
