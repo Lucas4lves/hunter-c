@@ -5,6 +5,15 @@ base_folder=$(pwd)
 cmd=$1
 sub_cmd=$2
 
+write_header(){
+cat <<EOF >$dest_folder/$header_file_name
+#ifndef $header_def_name
+#define $header_def_name
+
+#endif
+EOF
+}
+
 if [ $cmd == 'create' ]; then
 	if [ $sub_cmd == 'header' ]; then
 		header_name=$3
@@ -22,18 +31,12 @@ if [ $cmd == 'create' ]; then
 			echo "Header file $header_file_name already exists in /headers"
 			exit 1
 		fi
-cat <<EOF >$dest_folder/$header_file_name
-#ifndef $header_def_name
-#define $header_def_name
-
-#endif
-EOF
+	write_header
 	echo "Header $header_file_name was successfully created!
 Run 'cat headers/$header_file_name' to inspect it." 
 	else 
-		echo "$sub_cmd is not a valid command. Hit hunter --help for more info" 
+		echo "$sub_cmd is not a valid command. Hit hunter help for more info" 
 	fi
+else
+	echo "$cmd is not a recognized command. Hit hunter help to more info"
 fi 
-
-
-
