@@ -3,7 +3,7 @@
 base_folder=$(pwd)
 
 header_name=$1
-header_file_name="$header_name.h"
+header_file_name="${header_name,,}.h"
 header_def_name="${header_name^^}_H"
 
 if [ -d "$base_folder/headers" ]; then
