@@ -27,7 +27,7 @@ cat <<EOF >$dest_folder/$module_file_name
 EOF
 else
 cat <<EOF >$dest_folder/$module_file_name
-#include "headers/$module_name.h"
+#include "../headers/$module_name.h"
 EOF
 fi
 }
@@ -63,6 +63,7 @@ fi
 
 if [[ $1 == 'header' ]]; then
 	if [[ -f $dest_folder/"${module_file_name}" ]]; then
+	echo "DEBUG $(pwd)"
 	echo -e "${blue}>>--Hunter-C-->${clear}"
 	echo "CALLED FROM: $0"
 	echo -e "ERROR: Header file $module_file_name ${red}already exists${clear} in /headers"
@@ -80,7 +81,7 @@ fi
 
 if [[ $cmd == 'create' ]]; then
 	if [ $sub_cmd == 'header' ]; then
-		check_module_existence $sub_cmd
+		
 		module_name=$3
 		if [[ $module_name == *"."* ]]; then
 			echo -e "${blue}>>--Hunter C-->${clear}"
@@ -92,7 +93,7 @@ if [[ $cmd == 'create' ]]; then
 		module_def_name="${module_name^^}_H"
 
 		check_dest_folder $sub_cmd
-		
+		check_module_existence $sub_cmd
 		write_module $sub_cmd
 	echo -e "${blue}>>--Hunter C-->${clear}"	
 	echo -e "Header $module_file_name was ${green}successfully created!${clear}
