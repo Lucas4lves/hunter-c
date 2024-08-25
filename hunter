@@ -63,16 +63,16 @@ fi
 
 if [[ $1 == 'header' ]]; then
 	if [[ -f $dest_folder/$module_file_name ]]; then
-	echo -e "${blue}>>--Hunter C-->${clear}"
+	echo -e "${blue}>>--Hunter-C-->${clear}"
 	echo "CALLED FROM: $0"
-	echo "ERROR: Header file $module_file_name already exists in /headers"
+	echo -e "ERROR: Header file $module_file_name ${red}already exists${clear} in /headers"
 	exit 1
 	fi
 else 
 	if [[ -f $dest_folder/$module_file_name ]]; then
-	echo "-- Hunter C --"
+	echo -e "${blue}>>--Hunter C-->${clear}"
 	echo "CALLED FROM: $0"
-	echo "ERROR: Header file $module_file_name already exists in /src"
+	echo -e "ERROR: Header file $module_file_name ${red}already exists${clear} in /src"
 	exit 1
 	fi
 fi
@@ -97,7 +97,7 @@ Run 'cat headers/$module_file_name' to inspect it."
 		check_dest_folder $sub_cmd
 		check_module_existence $sub_cmd
 		write_module $sub_cmd
-	
+	echo -e "${blue}>>--Hunter C-->${clear}"
 	echo "Implementation file $module_file_name was successfully created!
 Run 'cat src/$module_file_name' to inspect it."
 	else

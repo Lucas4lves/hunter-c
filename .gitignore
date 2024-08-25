@@ -3,8 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
-# Ignore /headers folder 
+# Ignore /headers and /src folders 
 /headers
+/src
 # User-specific files
 *.rsuser
 *.suo
