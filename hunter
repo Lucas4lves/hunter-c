@@ -18,6 +18,13 @@ if [[ -z ${1+x} ]]; then
 	exit 1
 fi 
 
+IFS='/' read -r -a path_arr <<< $(pwd)
+
+if [[ "${path_arr[-1]}" == 'headers' ]]; then 
+	echo -e "ERROR: ${blue} Illegal subfolder ${clear}"
+	exit 1
+fi
+
 if [[ $1 == 'header' ]]; then
 cat <<EOF >$dest_folder/$module_file_name
 #ifndef $module_def_name
